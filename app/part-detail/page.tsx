@@ -1,28 +1,72 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import StatusBar from '@/components/ui/StatusBar'
+import { savePartSelection, getPartSelection, type PartType } from '@/lib/partSelections'
 
-type PartOption = 'oem' | 'aftermarket' | 'refurbished'
 type Tab = 'overview' | 'specs' | 'reviews'
 
+interface PartOption {
+  type: PartType
+  name: string
+  brand: string
+  price: number
+  rating: number
+  reviews: number
+  warranty: string
+  badge: string
+  badgeColor: string
+  reviewsData: Array<{
+    name: string
+    rating: number
+    date: string
+    text: string
+  }>
+}
+
 export default function PartDetailPage() {
-  const [selectedPart, setSelectedPart] = useState<PartOption>('aftermarket')
+  const router = useRouter()
+  const [selectedPart, setSelectedPart] = useState<PartType>('aftermarket')
   const [activeTab, setActiveTab] = useState<Tab>('overview')
 
-  const partOptions = {
+  // Load saved selection on mount
+  useEffect(() => {
+    const saved = getPartSelection('Front Brake Pads')
+    if (saved) {
+      setSelectedPart(saved.selectedType)
+    }
+  }, [])
+
+  const partOptions: Record<PartType, PartOption> = {
     oem: {
+      type: 'oem',
       name: 'OEM Premium',
       brand: 'Toyota Genuine Parts',
       price: 420,
       rating: 4.8,
       reviews: 2456,
       warranty: '2 years',
-      badge: 'Current',
+      badge: 'Current Quote',
       badgeColor: 'bg-gray-500',
+      reviewsData: [
+        {
+          name: 'Michael R.',
+          rating: 5,
+          date: '1 week ago',
+          text: 'Genuine Toyota parts - perfect fit and finish. Worth the premium if you want OEM quality.',
+        },
+        {
+          name: 'Jennifer L.',
+          rating: 5,
+          date: '3 weeks ago',
+          text: 'Great quality as expected from OEM. A bit pricey but peace of mind is worth it.',
+        },
+      ],
     },
     aftermarket: {
+      type: 'aftermarket',
       name: 'Premium Aftermarket',
       brand: 'Bosch QuietCast',
       price: 280,
@@ -31,8 +75,23 @@ export default function PartDetailPage() {
       warranty: '3 years',
       badge: 'Recommended',
       badgeColor: 'bg-green-500',
+      reviewsData: [
+        {
+          name: 'John M.',
+          rating: 5,
+          date: '2 weeks ago',
+          text: 'Excellent quality pads. No noise and minimal dust. Great value for money!',
+        },
+        {
+          name: 'Sarah K.',
+          rating: 5,
+          date: '1 month ago',
+          text: "These work just as well as OEM pads at half the price. Can't complain!",
+        },
+      ],
     },
     refurbished: {
+      type: 'refurbished',
       name: 'Certified Refurbished',
       brand: 'OEM Refurbished',
       price: 189,
@@ -41,10 +100,59 @@ export default function PartDetailPage() {
       warranty: '1 year',
       badge: 'Best Value',
       badgeColor: 'bg-blue-500',
+      reviewsData: [
+        {
+          name: 'David P.',
+          rating: 5,
+          date: '1 week ago',
+          text: 'Amazing deal! These refurbished pads work like new. Saved a ton of money.',
+        },
+        {
+          name: 'Lisa M.',
+          rating: 4,
+          date: '2 weeks ago',
+          text: 'Good quality for the price. Minor cosmetic imperfections but performance is solid.',
+        },
+      ],
+    },
+    budget: {
+      type: 'budget',
+      name: 'Economy Grade',
+      brand: 'ACDelco Professional',
+      price: 159,
+      rating: 4.3,
+      reviews: 3567,
+      warranty: '1 year',
+      badge: 'Budget Option',
+      badgeColor: 'bg-orange-500',
+      reviewsData: [
+        {
+          name: 'Robert T.',
+          rating: 4,
+          date: '3 days ago',
+          text: 'Decent pads for daily driving. Not the quietest but they get the job done.',
+        },
+        {
+          name: 'Amanda W.',
+          rating: 4,
+          date: '1 week ago',
+          text: 'Good budget option. Some brake dust but acceptable for the price point.',
+        },
+      ],
     },
   }
 
   const currentOption = partOptions[selectedPart]
+
+  const handleSaveAndReturn = () => {
+    savePartSelection('Front Brake Pads', {
+      itemName: 'Front Brake Pads',
+      selectedType: selectedPart,
+      brand: currentOption.brand,
+      price: currentOption.price,
+    })
+    router.push('/results')
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 overflow-x-hidden">
@@ -69,21 +177,23 @@ export default function PartDetailPage() {
 
       <div className="px-6 py-6 pb-32">
         {/* Savings Banner */}
-        <div className="bg-gradient-to-r from-green-400 to-green-600 rounded-2xl p-4 mb-6 shadow-lg">
-          <div className="flex items-center gap-3 text-white">
-            <i className="fas fa-tag text-2xl"></i>
-            <div className="flex-1">
-              <p className="font-bold text-lg">Save $140</p>
-              <p className="text-sm text-white/90">
-                Switch to recommended alternative
-              </p>
+        {selectedPart !== 'oem' && (
+          <div className="bg-gradient-to-r from-green-400 to-green-600 rounded-2xl p-4 mb-6 shadow-lg">
+            <div className="flex items-center gap-3 text-white">
+              <i className="fas fa-tag text-2xl"></i>
+              <div className="flex-1">
+                <p className="font-bold text-lg">Save ${420 - currentOption.price}</p>
+                <p className="text-sm text-white/90">
+                  Switch to {currentOption.name.toLowerCase()}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Part Options */}
         <div className="space-y-3 mb-6">
-          {(Object.keys(partOptions) as PartOption[]).map((key) => {
+          {(Object.keys(partOptions) as PartType[]).map((key) => {
             const option = partOptions[key]
             const isSelected = selectedPart === key
             return (
@@ -113,8 +223,8 @@ export default function PartDetailPage() {
                   </div>
 
                   {/* Content */}
-                  <div className="flex-1 text-left">
-                    <div className="flex items-center gap-2 mb-1">
+                  <div className="flex-1 text-left min-w-0">
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
                       <h3 className="font-bold text-gray-900">{option.name}</h3>
                       <span
                         className={`px-2 py-0.5 ${option.badgeColor} text-white text-xs font-semibold rounded-full`}
@@ -122,8 +232,8 @@ export default function PartDetailPage() {
                         {option.badge}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600 mb-2">{option.brand}</p>
-                    <div className="flex items-center gap-4 mb-2">
+                    <p className="text-sm text-gray-600 mb-2 truncate">{option.brand}</p>
+                    <div className="flex items-center gap-4 mb-2 flex-wrap">
                       <div className="flex items-center gap-1">
                         <i className="fas fa-star text-yellow-400 text-sm"></i>
                         <span className="text-sm font-semibold text-gray-900">
@@ -215,7 +325,7 @@ export default function PartDetailPage() {
                 <div className="flex justify-between py-2 border-b border-gray-100">
                   <span className="text-sm text-gray-600">Part Number</span>
                   <span className="text-sm font-semibold text-gray-900">
-                    BC1234-A
+                    BC{selectedPart === 'oem' ? '1234-OEM' : selectedPart === 'aftermarket' ? '1234-A' : selectedPart === 'refurbished' ? '1234-R' : '1234-B'}
                   </span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-gray-100">
@@ -233,13 +343,13 @@ export default function PartDetailPage() {
                 <div className="flex justify-between py-2 border-b border-gray-100">
                   <span className="text-sm text-gray-600">Expected Life</span>
                   <span className="text-sm font-semibold text-gray-900">
-                    50,000 miles
+                    {selectedPart === 'oem' ? '50,000' : selectedPart === 'aftermarket' ? '45,000' : selectedPart === 'refurbished' ? '40,000' : '35,000'} miles
                   </span>
                 </div>
                 <div className="flex justify-between py-2">
                   <span className="text-sm text-gray-600">Made In</span>
                   <span className="text-sm font-semibold text-gray-900">
-                    USA
+                    {selectedPart === 'oem' ? 'Japan' : 'USA'}
                   </span>
                 </div>
               </div>
@@ -288,22 +398,9 @@ export default function PartDetailPage() {
                   </div>
                 </div>
 
-                {/* Sample Reviews */}
+                {/* Sample Reviews - Dynamic based on selected part */}
                 <div className="space-y-3">
-                  {[
-                    {
-                      name: 'John M.',
-                      rating: 5,
-                      date: '2 weeks ago',
-                      text: 'Excellent quality pads. No noise and minimal dust. Great value for money!',
-                    },
-                    {
-                      name: 'Sarah K.',
-                      rating: 5,
-                      date: '1 month ago',
-                      text: "These work just as well as OEM pads at half the price. Can't complain!",
-                    },
-                  ].map((review, idx) => (
+                  {currentOption.reviewsData.map((review, idx) => (
                     <div
                       key={idx}
                       className="bg-gray-50 rounded-xl p-4"
@@ -350,7 +447,7 @@ export default function PartDetailPage() {
             </li>
             <li className="flex gap-2">
               <span>•</span>
-              <span>33% cheaper than dealer pricing</span>
+              <span>{Math.round(((420 - currentOption.price) / 420) * 100)}% cheaper than dealer pricing</span>
             </li>
             <li className="flex gap-2">
               <span>•</span>
@@ -360,12 +457,12 @@ export default function PartDetailPage() {
         </div>
 
         {/* Action Button */}
-        <Link
-          href="/results"
-          className="block w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-4 rounded-2xl shadow-lg text-center active:scale-95 transition-transform"
+        <button
+          onClick={handleSaveAndReturn}
+          className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-4 rounded-2xl shadow-lg active:scale-95 transition-transform"
         >
           Update Quote with This Option
-        </Link>
+        </button>
       </div>
     </div>
   )

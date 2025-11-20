@@ -1,18 +1,34 @@
 'use client'
 
+import { useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import StatusBar from '@/components/ui/StatusBar'
 
 export default function CameraPage() {
   const router = useRouter()
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleCapture = () => {
     router.push('/loading')
   }
 
+  const handleGalleryClick = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      // In a real app, you would upload the file here
+      console.log('Selected file:', file.name)
+      // Simulate processing and navigate to loading
+      router.push('/loading')
+    }
+  }
+
   return (
-    <div className="gradient-bg min-h-screen">
+    <div className="gradient-bg min-h-screen overflow-x-hidden">
       <StatusBar bgColor="transparent" />
 
       <div className="flex flex-col h-screen">
@@ -84,6 +100,7 @@ export default function CameraPage() {
                   <li>• Ensure good lighting</li>
                   <li>• Avoid shadows and glare</li>
                   <li>• Capture entire document</li>
+                  <li>• Or upload from gallery below</li>
                 </ul>
               </div>
             </div>
@@ -91,9 +108,22 @@ export default function CameraPage() {
 
           {/* Capture Buttons */}
           <div className="flex items-center justify-center gap-4">
-            {/* Gallery Button */}
-            <button className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center text-white active:scale-95 transition-transform">
+            {/* Gallery Button with hidden file input */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileSelect}
+            />
+            <button 
+              onClick={handleGalleryClick}
+              className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center text-white active:scale-95 transition-transform hover:bg-white/30 relative group"
+            >
               <i className="fas fa-images text-2xl"></i>
+              <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                Upload Photo
+              </div>
             </button>
 
             {/* Capture Button */}
@@ -109,7 +139,7 @@ export default function CameraPage() {
             </button>
 
             {/* Flash Button */}
-            <button className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center text-white active:scale-95 transition-transform">
+            <button className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center text-white active:scale-95 transition-transform hover:bg-white/30">
               <i className="fas fa-bolt text-2xl"></i>
             </button>
           </div>

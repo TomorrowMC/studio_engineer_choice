@@ -1,62 +1,115 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import StatusBar from '@/components/ui/StatusBar'
+import { getQuoteData, type PartSelection } from '@/lib/partSelections'
+
+interface ItemData {
+  id: number
+  name: string
+  originalPrice: number
+  marketPrice: number
+  marketRange?: string
+  status: 'High' | 'Fair'
+  color: 'red' | 'yellow' | 'green'
+  desc: string
+  details: string
+  canCustomize: boolean
+  brandOptions?: Array<{
+    brand: string
+    price: number
+    rating: number
+  }>
+}
 
 export default function ResultsPage() {
+  const router = useRouter()
   const [expandedItem, setExpandedItem] = useState<number | null>(null)
+  const [selections, setSelections] = useState<Record<string, PartSelection>>({})
+  
+  useEffect(() => {
+    const data = getQuoteData()
+    setSelections(data.selections)
+  }, [])
 
   const toggleExpand = (index: number) => {
     setExpandedItem(expandedItem === index ? null : index)
   }
 
-  const items = [
+  const items: ItemData[] = [
     {
       id: 1,
       name: 'Front Brake Pads',
-      price: 420,
+      originalPrice: 420,
       marketPrice: 280,
       status: 'High',
       color: 'red',
-      desc: 'OEM Premium Grade',
-      saving: 140,
-      details: 'The quoted price for OEM brake pads is significantly higher than the market average for this vehicle model. Aftermarket alternatives from reputable brands like Bosch or Akebono offer similar performance at a lower cost.'
+      desc: selections['Front Brake Pads']?.brand || 'OEM Premium Grade',
+      details: 'The quoted price for OEM brake pads is significantly higher than the market average for this vehicle model. Aftermarket alternatives from reputable brands like Bosch or Akebono offer similar performance at a lower cost.',
+      canCustomize: true
     },
     {
       id: 2,
       name: 'Brake Rotors (Pair)',
-      price: 340,
-      marketPrice: 340, // Average of 320-360
+      originalPrice: 340,
+      marketPrice: 340,
       marketRange: '320-360',
       status: 'Fair',
       color: 'green',
       desc: 'Standard Quality',
-      details: 'The price for rotors is within the expected market range. No significant savings available here unless opting for economy parts, which is not recommended for braking systems.'
+      details: 'The price for rotors is within the expected market range. We found several quality alternatives from trusted brands at similar or better prices.',
+      canCustomize: true,
+      brandOptions: [
+        { brand: 'Wagner Premium', price: 320, rating: 4.6 },
+        { brand: 'ACDelco Professional', price: 340, rating: 4.7 },
+        { brand: 'Raybestos Element3', price: 355, rating: 4.8 }
+      ]
     },
     {
       id: 3,
       name: 'Labor (2.5 hrs)',
-      price: 300,
-      marketPrice: 225, // Average of 200-250
+      originalPrice: 300,
+      marketPrice: 225,
       marketRange: '200-250',
-      status: 'High', // Slightly high
+      status: 'High',
       color: 'yellow',
       desc: '$120/hr rate',
-      details: 'The labor rate of $120/hr is slightly above the local average of $90-$100/hr for independent shops. Dealerships typically charge $130-$150/hr.'
+      details: 'The labor rate of $120/hr is slightly above the local average of $90-$100/hr for independent shops. Dealerships typically charge $130-$150/hr.',
+      canCustomize: false
     },
     {
       id: 4,
       name: 'Brake Fluid Flush',
-      price: 89,
-      marketPrice: 85, // Average of 75-95
+      originalPrice: 89,
+      marketPrice: 85,
       marketRange: '75-95',
       status: 'Fair',
       color: 'green',
       desc: 'DOT 4 Synthetic',
-      details: 'Price is fair for a standard brake fluid flush service.'
+      details: 'Price is fair for a standard brake fluid flush service.',
+      canCustomize: false
     }
   ]
+
+  // Calculate current prices based on selections
+  const getCurrentPrice = (item: ItemData): number => {
+    const selection = selections[item.name]
+    return selection ? selection.price : item.originalPrice
+  }
+
+  const originalTotal = items.reduce((sum, item) => sum + item.originalPrice, 0)
+  const currentTotal = items.reduce((sum, item) => sum + getCurrentPrice(item), 0)
+  const totalSavings = originalTotal - currentTotal
+
+  const handleCustomizeItem = (itemName: string) => {
+    if (itemName === 'Front Brake Pads') {
+      router.push('/part-detail')
+    } else if (itemName === 'Brake Rotors (Pair)') {
+      router.push('/part-detail-rotors')
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 overflow-x-hidden">
@@ -96,11 +149,13 @@ export default function ResultsPage() {
             <div className="flex-1 text-white">
               <h2 className="text-xl font-bold mb-1">You Can Save Money!</h2>
               <p className="text-white/90 text-sm mb-3">
-                We found cheaper alternatives that match quality standards
+                {totalSavings > 0 ? 'We found cheaper alternatives that match quality standards' : 'Review our recommended options below'}
               </p>
               <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-bold">$287</span>
-                <span className="text-white/80 text-lg">potential savings</span>
+                <span className="text-4xl font-bold">${totalSavings}</span>
+                <span className="text-white/80 text-lg">
+                  {totalSavings > 0 ? 'in total savings' : 'potential savings'}
+                </span>
               </div>
             </div>
           </div>
@@ -113,7 +168,7 @@ export default function ResultsPage() {
                 <div>
                     <div className="flex justify-between text-sm mb-1">
                         <span className="text-gray-600">Original Quote</span>
-                        <span className="font-bold text-gray-900">$1,842</span>
+                        <span className="font-bold text-gray-900">${originalTotal.toLocaleString()}</span>
                     </div>
                     <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
                         <div className="h-full bg-gray-400 rounded-full" style={{ width: '100%' }}></div>
@@ -121,11 +176,11 @@ export default function ResultsPage() {
                 </div>
                 <div>
                     <div className="flex justify-between text-sm mb-1">
-                        <span className="text-gray-600">With Alternatives</span>
-                        <span className="font-bold text-green-600">$1,555</span>
+                        <span className="text-gray-600">With Your Selections</span>
+                        <span className="font-bold text-green-600">${currentTotal.toLocaleString()}</span>
                     </div>
                     <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
-                        <div className="h-full bg-green-500 rounded-full relative" style={{ width: '84%' }}>
+                        <div className="h-full bg-green-500 rounded-full relative" style={{ width: `${(currentTotal / originalTotal) * 100}%` }}>
                              <div className="absolute top-0 right-0 bottom-0 w-full bg-white/20 animate-pulse"></div>
                         </div>
                     </div>
@@ -133,7 +188,9 @@ export default function ResultsPage() {
             </div>
             <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
                 <span className="text-sm text-gray-600">Total Savings</span>
-                <span className="text-green-600 font-bold bg-green-50 px-3 py-1 rounded-lg border border-green-100">15.6%</span>
+                <span className="text-green-600 font-bold bg-green-50 px-3 py-1 rounded-lg border border-green-100">
+                  {((totalSavings / originalTotal) * 100).toFixed(1)}%
+                </span>
             </div>
         </div>
 
@@ -157,72 +214,92 @@ export default function ResultsPage() {
         <div className="space-y-3 mb-6">
           <h3 className="font-bold text-gray-900 text-lg">Itemized Analysis</h3>
 
-          {items.map((item, index) => (
-            <div 
-                key={item.id}
-                className={`bg-white rounded-2xl shadow-sm border-l-4 transition-all duration-300 overflow-hidden ${expandedItem === index ? 'ring-2 ring-indigo-100' : ''}`}
-                style={{ borderLeftColor: item.color === 'red' ? '#EF4444' : item.color === 'yellow' ? '#EAB308' : '#22C55E' }}
-            >
-                <div className="p-4 cursor-pointer" onClick={() => toggleExpand(index)}>
-                    <div className="flex items-start justify-between mb-2">
-                    <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-bold text-gray-900">{item.name}</h4>
-                        <span className={`px-2 py-0.5 text-xs font-semibold rounded-full 
-                            ${item.color === 'red' ? 'bg-red-100 text-red-600' : 
-                              item.color === 'yellow' ? 'bg-yellow-100 text-yellow-600' : 
-                              'bg-green-100 text-green-600'}`}>
-                            {item.status}
-                        </span>
-                        </div>
-                        <p className="text-sm text-gray-600">{item.desc}</p>
-                    </div>
-                    <div className="text-right">
-                        <p className="font-bold text-gray-900">${item.price}</p>
-                        <p className="text-xs text-gray-500">
-                            {item.marketRange ? `Range: $${item.marketRange}` : `Market: $${item.marketPrice}`}
-                        </p>
-                    </div>
-                    </div>
-                    
-                    {/* Range Visualization (Mini) */}
-                    <div className="mt-2 h-1.5 bg-gray-100 rounded-full overflow-hidden flex items-center relative">
-                        {/* Fair Price Zone Indicator - simplified for visualization */}
-                        <div className="absolute left-[20%] right-[20%] h-full bg-green-200/50"></div>
-                        {/* Price Marker */}
-                         <div 
-                            className={`h-full rounded-full ${item.color === 'red' ? 'bg-red-500' : item.color === 'yellow' ? 'bg-yellow-500' : 'bg-green-500'}`}
-                            style={{ 
-                                width: '20%', 
-                                marginLeft: item.color === 'red' ? '80%' : item.color === 'yellow' ? '60%' : '40%' 
-                            }}
-                        ></div>
-                    </div>
+          {items.map((item, index) => {
+            const currentPrice = getCurrentPrice(item)
+            const itemSavings = item.originalPrice - currentPrice
+            const selection = selections[item.name]
+            
+            return (
+              <div 
+                  key={item.id}
+                  className={`bg-white rounded-2xl shadow-sm border-l-4 transition-all duration-300 overflow-hidden ${expandedItem === index ? 'ring-2 ring-indigo-100' : ''}`}
+                  style={{ borderLeftColor: item.color === 'red' ? '#EF4444' : item.color === 'yellow' ? '#EAB308' : '#22C55E' }}
+              >
+                  <div className="p-4 cursor-pointer" onClick={() => toggleExpand(index)}>
+                      <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1 flex-wrap">
+                          <h4 className="font-bold text-gray-900">{item.name}</h4>
+                          <span className={`px-2 py-0.5 text-xs font-semibold rounded-full 
+                              ${item.color === 'red' ? 'bg-red-100 text-red-600' : 
+                                item.color === 'yellow' ? 'bg-yellow-100 text-yellow-600' : 
+                                'bg-green-100 text-green-600'}`}>
+                              {item.status}
+                          </span>
+                          {selection && (
+                            <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-600">
+                              <i className="fas fa-check mr-1"></i>Modified
+                            </span>
+                          )}
+                          </div>
+                          <p className="text-sm text-gray-600 truncate">{selection ? selection.brand : item.desc}</p>
+                      </div>
+                      <div className="text-right flex-shrink-0 ml-2">
+                          <p className="font-bold text-gray-900">${currentPrice}</p>
+                          {currentPrice !== item.originalPrice && (
+                            <p className="text-xs text-gray-400 line-through">${item.originalPrice}</p>
+                          )}
+                          <p className="text-xs text-gray-500">
+                              {item.marketRange ? `Range: $${item.marketRange}` : `Market: $${item.marketPrice}`}
+                          </p>
+                      </div>
+                      </div>
+                      
+                      {/* Range Visualization (Mini) */}
+                      <div className="mt-2 h-1.5 bg-gray-100 rounded-full overflow-hidden flex items-center relative">
+                          {/* Fair Price Zone Indicator */}
+                          <div className="absolute left-[20%] right-[20%] h-full bg-green-200/50"></div>
+                          {/* Price Marker */}
+                           <div 
+                              className={`h-full rounded-full ${item.color === 'red' ? 'bg-red-500' : item.color === 'yellow' ? 'bg-yellow-500' : 'bg-green-500'}`}
+                              style={{ 
+                                  width: '20%', 
+                                  marginLeft: item.color === 'red' ? '80%' : item.color === 'yellow' ? '60%' : '40%' 
+                              }}
+                          ></div>
+                      </div>
 
-                    {expandedItem === index && (
-                        <div className="mt-4 pt-3 border-t border-gray-100 text-sm animate-fade-in">
-                            <p className="text-gray-600 mb-3 leading-relaxed">{item.details}</p>
-                            {item.saving && (
-                                <Link
-                                href="/part-detail"
-                                className="flex items-center gap-2 text-indigo-600 font-bold bg-indigo-50 p-3 rounded-xl hover:bg-indigo-100 transition-colors"
-                                >
-                                <i className="fas fa-tag"></i>
-                                <span>Save ${item.saving} with alternative</span>
-                                <i className="fas fa-chevron-right ml-auto text-xs"></i>
-                                </Link>
-                            )}
-                        </div>
-                    )}
-                    
-                    {expandedItem !== index && item.saving && (
-                        <div className="mt-3 text-xs font-bold text-indigo-600 flex items-center gap-1">
-                            <i className="fas fa-info-circle"></i> Tap to see savings options
-                        </div>
-                    )}
-                </div>
-            </div>
-          ))}
+                      {expandedItem === index && (
+                          <div className="mt-4 pt-3 border-t border-gray-100 text-sm animate-fade-in">
+                              <p className="text-gray-600 mb-3 leading-relaxed">{item.details}</p>
+                              {item.canCustomize && (
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      handleCustomizeItem(item.name)
+                                    }}
+                                    className="flex items-center gap-2 w-full text-indigo-600 font-bold bg-indigo-50 p-3 rounded-xl hover:bg-indigo-100 transition-colors"
+                                  >
+                                    <i className="fas fa-shopping-cart"></i>
+                                    <span>
+                                      {itemSavings > 0 ? `Saving $${itemSavings}` : 'View Options'} - Tap to customize
+                                    </span>
+                                    <i className="fas fa-chevron-right ml-auto text-xs"></i>
+                                  </button>
+                              )}
+                          </div>
+                      )}
+                      
+                      {expandedItem !== index && item.canCustomize && (
+                          <div className="mt-3 text-xs font-bold text-indigo-600 flex items-center gap-1">
+                              <i className="fas fa-info-circle"></i> 
+                              {itemSavings > 0 ? `Saving $${itemSavings} - ` : ''}Tap to see options
+                          </div>
+                      )}
+                  </div>
+              </div>
+            )
+          })}
         </div>
 
         {/* Alternative Parts Recommendation */}
@@ -232,10 +309,10 @@ export default function ResultsPage() {
               <i className="fas fa-lightbulb text-yellow-300 text-2xl"></i>
             </div>
             <div className="flex-1 text-white">
-              <h3 className="font-bold text-lg mb-1">Smart Alternative Found</h3>
+              <h3 className="font-bold text-lg mb-1">Smart Alternatives Available</h3>
               <p className="text-white/90 text-sm">
-                High-quality aftermarket parts can save you money without
-                compromising safety
+                High-quality parts from trusted brands can save you money without
+                compromising safety or performance
               </p>
             </div>
           </div>
@@ -243,7 +320,7 @@ export default function ResultsPage() {
             href="/part-detail"
             className="block w-full bg-white text-indigo-600 font-bold py-3 rounded-xl text-center active:scale-95 transition-transform hover:bg-gray-50 shadow-md"
           >
-            View Alternative Options
+            Explore All Options
             <i className="fas fa-arrow-right ml-2"></i>
           </Link>
         </div>
