@@ -6,7 +6,7 @@ import BottomNav from '@/components/ui/BottomNav'
 
 export default function ProfilePage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 overflow-x-hidden">
       <StatusBar bgColor="white" />
 
       {/* Header */}
@@ -28,10 +28,10 @@ export default function ProfilePage() {
 
             {/* User Info */}
             <div className="flex-1 min-w-0">
-              <h2 className="text-2xl font-bold text-gray-900 mb-1">
+              <h2 className="text-2xl font-bold text-gray-900 mb-1 truncate">
                 Alex Chen
               </h2>
-              <p className="text-sm text-gray-600 mb-2">alex.chen@email.com</p>
+              <p className="text-sm text-gray-600 mb-2 truncate">alex.chen@email.com</p>
               <div className="flex items-center gap-2">
                 <span className="px-3 py-1 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white text-xs font-bold rounded-full">
                   <i className="fas fa-crown mr-1"></i>
@@ -77,15 +77,15 @@ export default function ProfilePage() {
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl flex items-center justify-center flex-shrink-0">
                   <i className="fas fa-car text-white text-2xl"></i>
                 </div>
-                <div className="flex-1">
-                  <div className="flex items-start justify-between mb-1">
-                    <div>
-                      <h4 className="font-bold text-gray-900">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between mb-1 gap-2">
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-bold text-gray-900 truncate">
                         2019 Toyota Camry
                       </h4>
                       <p className="text-sm text-gray-600">LE • Silver</p>
                     </div>
-                    <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-lg">
+                    <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-lg whitespace-nowrap flex-shrink-0">
                       Primary
                     </span>
                   </div>
@@ -110,8 +110,8 @@ export default function ProfilePage() {
                 <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl flex items-center justify-center flex-shrink-0">
                   <i className="fas fa-car text-white text-2xl"></i>
                 </div>
-                <div className="flex-1">
-                  <h4 className="font-bold text-gray-900 mb-1">
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-bold text-gray-900 mb-1 truncate">
                     2016 Honda CR-V
                   </h4>
                   <p className="text-sm text-gray-600 mb-3">EX • White Pearl</p>
@@ -136,8 +136,8 @@ export default function ProfilePage() {
                 <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-2xl flex items-center justify-center flex-shrink-0">
                   <i className="fas fa-car text-white text-2xl"></i>
                 </div>
-                <div className="flex-1">
-                  <h4 className="font-bold text-gray-900 mb-1">
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-bold text-gray-900 mb-1 truncate">
                     2021 Tesla Model 3
                   </h4>
                   <p className="text-sm text-gray-600 mb-3">Long Range • Black</p>

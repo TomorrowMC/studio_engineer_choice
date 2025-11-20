@@ -74,7 +74,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gray-50 pb-20 overflow-x-hidden">
       <StatusBar bgColor="white" />
 
       {/* Header */}
@@ -185,11 +185,11 @@ export default function DashboardPage() {
                     <i className={`fas ${activity.icon} text-${activity.color}-600 text-xl`}></i>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between mb-1">
-                      <h3 className="font-bold text-gray-900 truncate pr-2">
+                    <div className="flex items-start justify-between mb-1 gap-2">
+                      <h3 className="font-bold text-gray-900 truncate flex-1">
                         {activity.title}
                       </h3>
-                      <span className="text-xs text-gray-500 whitespace-nowrap">
+                      <span className="text-xs text-gray-500 whitespace-nowrap flex-shrink-0">
                         {activity.date}
                       </span>
                     </div>

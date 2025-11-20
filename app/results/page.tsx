@@ -59,7 +59,7 @@ export default function ResultsPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 overflow-x-hidden">
       <StatusBar bgColor="white" />
 
       {/* Header */}

@@ -8,16 +8,16 @@ interface PhoneFrameProps {
 
 export default function PhoneFrame({ children, label, description }: PhoneFrameProps) {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center w-full">
       {label && (
-        <div className="text-center mb-4">
+        <div className="text-center mb-4 px-4">
           <div className="text-white font-bold text-xl mb-2">{label}</div>
           {description && (
-            <div className="text-white/80 text-sm max-w-[393px]">{description}</div>
+            <div className="text-white/80 text-sm max-w-[393px] mx-auto">{description}</div>
           )}
         </div>
       )}
-      <div className="w-[393px] h-[852px] bg-black rounded-[55px] p-3 shadow-2xl relative">
+      <div className="w-full max-w-[393px] aspect-[393/852] bg-black rounded-[55px] p-3 shadow-2xl relative">
         {/* Notch */}
         <div className="absolute top-3 left-1/2 -translate-x-1/2 w-[120px] h-[30px] bg-black rounded-b-[20px] z-20"></div>
 

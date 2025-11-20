@@ -25,20 +25,20 @@ export default function Home() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-primary p-8">
+    <div className="min-h-screen bg-gradient-primary p-4 sm:p-8 overflow-x-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="w-24 h-24 bg-white rounded-3xl mx-auto mb-6 flex items-center justify-center shadow-2xl">
-            <i className="fas fa-shield-alt text-5xl text-indigo-600"></i>
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-3xl mx-auto mb-4 sm:mb-6 flex items-center justify-center shadow-2xl">
+            <i className="fas fa-shield-alt text-4xl sm:text-5xl text-indigo-600"></i>
           </div>
-          <h1 className="text-5xl font-bold text-white mb-4">The Choice Engine</h1>
-          <p className="text-2xl text-white/90 mb-2">Complete Interactive Prototype</p>
-          <p className="text-lg text-white/70">Next.js Version - Snap • Analyze • Save</p>
+          <h1 className="text-3xl sm:text-5xl font-bold text-white mb-3 sm:mb-4 px-4">The Choice Engine</h1>
+          <p className="text-lg sm:text-2xl text-white/90 mb-2 px-4">Complete Interactive Prototype</p>
+          <p className="text-sm sm:text-lg text-white/70 px-4">Next.js Version - Snap • Analyze • Save</p>
         </div>
 
         {/* Navigation Card */}
-        <div className="bg-white/95 backdrop-blur-lg rounded-3xl p-8 mb-12 shadow-2xl">
+        <div className="bg-white/95 backdrop-blur-lg rounded-3xl p-4 sm:p-8 mb-8 sm:mb-12 shadow-2xl">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
             <i className="fas fa-compass text-indigo-600 mr-2"></i>
             Navigation Guide
@@ -67,8 +67,8 @@ export default function Home() {
         </div>
 
         {/* Key Features */}
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-white text-center mb-8">Key Product Features</h2>
+        <div className="mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-6 sm:mb-8 px-4">Key Product Features</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, idx) => (
               <div
@@ -86,7 +86,7 @@ export default function Home() {
         </div>
 
         {/* Value Proposition */}
-        <div className="bg-white/95 backdrop-blur-lg rounded-3xl p-8 mb-12 shadow-2xl">
+        <div className="bg-white/95 backdrop-blur-lg rounded-3xl p-4 sm:p-8 mb-8 sm:mb-12 shadow-2xl">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
             <i className="fas fa-lightbulb text-yellow-500 mr-2"></i>
             Core Value Proposition

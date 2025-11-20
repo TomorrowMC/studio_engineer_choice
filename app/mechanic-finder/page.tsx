@@ -75,7 +75,7 @@ export default function MechanicFinderPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 overflow-x-hidden">
       <StatusBar bgColor="white" />
 
       {/* Header */}
@@ -202,11 +202,11 @@ export default function MechanicFinderPage() {
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between mb-1">
-                    <h3 className="font-bold text-gray-900 text-lg truncate">
+                  <div className="flex items-start justify-between mb-1 gap-2">
+                    <h3 className="font-bold text-gray-900 text-lg truncate flex-1">
                       {shop.name}
                     </h3>
-                    <button className="text-gray-400 active:scale-95 transition-transform hover:text-red-500">
+                    <button className="text-gray-400 active:scale-95 transition-transform hover:text-red-500 flex-shrink-0">
                       <i className="far fa-heart text-xl"></i>
                     </button>
                   </div>

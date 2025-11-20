@@ -47,7 +47,7 @@ export default function PartDetailPage() {
   const currentOption = partOptions[selectedPart]
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 overflow-x-hidden">
       <StatusBar bgColor="white" />
 
       {/* Header */}
