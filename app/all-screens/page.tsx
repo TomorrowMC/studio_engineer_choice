@@ -131,7 +131,7 @@ export default function AllScreensPage() {
         {/* Footer */}
         <div className="text-center text-white/80 pb-8">
           <p className="text-lg mb-2">
-            <i class="fas fa-users mr-2"></i>
+            <i className="fas fa-users mr-2"></i>
             Created by Team 24 - Cornell Tech Studio
           </p>
           <p className="text-sm mb-4">
