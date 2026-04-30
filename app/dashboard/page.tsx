@@ -1,16 +1,31 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import StatusBar from '@/components/ui/StatusBar'
 import BottomNav from '@/components/ui/BottomNav'
 import { getActivities, type ActivityRecord } from '@/lib/activityStorage'
 
-const iconColorMap: Record<string, string> = {
-  green: 'fa-check-circle',
-  blue: 'fa-file-invoice',
-  purple: 'fa-wrench',
-  orange: 'fa-oil-can',
+function useCountUp(target: number, duration = 900) {
+  const [value, setValue] = useState(0)
+  const startedRef = useRef(false)
+
+  useEffect(() => {
+    if (startedRef.current || target === 0) return
+    startedRef.current = true
+    const start = performance.now()
+    const tick = (now: number) => {
+      const elapsed = now - start
+      const t = Math.min(elapsed / duration, 1)
+      const eased = 1 - Math.pow(1 - t, 2)
+      setValue(Math.floor(eased * target))
+      if (t < 1) requestAnimationFrame(tick)
+      else setValue(target)
+    }
+    requestAnimationFrame(tick)
+  }, [target, duration])
+
+  return value
 }
 
 const defaultActivities: ActivityRecord[] = [
@@ -64,6 +79,31 @@ const defaultActivities: ActivityRecord[] = [
   },
 ]
 
+const borderForColor: Record<string, string> = {
+  green: 'border-l-green-400',
+  blue: 'border-l-blue-400',
+  purple: 'border-l-purple-400',
+  orange: 'border-l-orange-400',
+}
+const bgForColor: Record<string, string> = {
+  green: 'bg-green-100',
+  blue: 'bg-blue-100',
+  purple: 'bg-purple-100',
+  orange: 'bg-orange-100',
+}
+const textForColor: Record<string, string> = {
+  green: 'text-green-600',
+  blue: 'text-blue-600',
+  purple: 'text-purple-600',
+  orange: 'text-orange-600',
+}
+const savingsBgForColor: Record<string, string> = {
+  green: 'bg-green-50 text-green-600',
+  blue: 'bg-blue-50 text-blue-600',
+  purple: 'bg-purple-50 text-purple-600',
+  orange: 'bg-orange-50 text-orange-600',
+}
+
 export default function DashboardPage() {
   const [greeting, setGreeting] = useState('Welcome back,')
   const [currentTipIndex, setCurrentTipIndex] = useState(0)
@@ -71,21 +111,21 @@ export default function DashboardPage() {
   const [selectedActivity, setSelectedActivity] = useState<ActivityRecord | null>(null)
   const [userName, setUserName] = useState('Alex Chen')
 
+  const totalSaved = useCountUp(1247)
+  const analysisCount = useCountUp(23)
+
   const tips = [
     {
       title: 'Always ask for itemized quotes',
-      content:
-        'Before agreeing to repairs, get an itemized quote. This makes it easier to spot overcharges and compare prices.',
+      content: 'Before agreeing to repairs, get an itemized quote. This makes it easier to spot overcharges and compare prices.',
     },
     {
       title: 'Check for warranty coverage',
-      content:
-        "Some repairs might be covered under your vehicle's powertrain or bumper-to-bumper warranty. Always check first.",
+      content: "Some repairs might be covered under your vehicle's powertrain or bumper-to-bumper warranty. Always check first.",
     },
     {
       title: 'Ask about aftermarket parts',
-      content:
-        'High-quality aftermarket parts can save you 20–50% compared to OEM parts without sacrificing reliability.',
+      content: 'High-quality aftermarket parts can save you 20–50% compared to OEM parts without sacrificing reliability.',
     },
   ]
 
@@ -110,169 +150,173 @@ export default function DashboardPage() {
     }
   }, [])
 
-  const nextTip = () => {
-    setCurrentTipIndex((prev) => (prev + 1) % tips.length)
-  }
-
-  const bgForColor: Record<string, string> = {
-    green: 'bg-green-100',
-    blue: 'bg-blue-100',
-    purple: 'bg-purple-100',
-    orange: 'bg-orange-100',
-  }
-  const textForColor: Record<string, string> = {
-    green: 'text-green-600',
-    blue: 'text-blue-600',
-    purple: 'text-purple-600',
-    orange: 'text-orange-600',
-  }
-
   return (
     <div className="min-h-screen bg-gray-50 pb-20 overflow-x-hidden">
       <StatusBar bgColor="white" />
 
       {/* Header */}
-      <div className="bg-gradient-to-br from-indigo-600 to-purple-600 px-6 pt-4 pb-8 rounded-b-[30px] shadow-xl relative z-10">
-        <div className="flex items-center justify-between mb-6">
-          <div className="animate-fade-in">
-            <p className="text-white/80 text-sm mb-1 font-medium">{greeting}</p>
-            <h1 className="text-white text-3xl font-bold tracking-tight">{userName}</h1>
+      <div className="bg-gradient-to-br from-indigo-600 to-purple-700 px-6 pt-4 pb-8 rounded-b-[32px] shadow-xl relative z-10">
+        <div className="flex items-center justify-between mb-5">
+          <div className="animate-fade-slide-up">
+            <p className="text-white/75 text-sm mb-0.5 font-medium">{greeting}</p>
+            <h1 className="text-white text-2xl font-bold tracking-tight">{userName}</h1>
           </div>
-          <button className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white active:scale-95 transition-transform border border-white/10">
+          <button className="w-10 h-10 glass-card-dark rounded-full flex items-center justify-center text-white active:scale-95 transition-transform">
             <div className="relative">
               <i className="fas fa-bell"></i>
-              <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-indigo-600"></div>
+              <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-indigo-700"></div>
             </div>
           </button>
         </div>
 
-        {/* Stats Cards */}
+        {/* Stats */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+          <div className="glass-card-dark rounded-2xl p-4 animate-fade-slide-up delay-100">
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                <i className="fas fa-piggy-bank text-white text-sm"></i>
+              <div className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center">
+                <i className="fas fa-piggy-bank text-white text-xs"></i>
               </div>
-              <p className="text-white/90 text-xs font-medium">Total Saved</p>
+              <p className="text-white/80 text-xs font-medium">Total Saved</p>
             </div>
-            <p className="text-white text-2xl font-bold tracking-tight">$1,247</p>
-            <p className="text-white/70 text-xs mt-1 font-medium">Lifetime savings</p>
+            <p className="text-white text-2xl font-black tabular-nums tracking-tight">
+              ${totalSaved.toLocaleString()}
+            </p>
+            <p className="text-white/60 text-xs mt-1">Lifetime savings</p>
           </div>
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+          <div className="glass-card-dark rounded-2xl p-4 animate-fade-slide-up delay-200">
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                <i className="fas fa-chart-line text-white text-sm"></i>
+              <div className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center">
+                <i className="fas fa-chart-line text-white text-xs"></i>
               </div>
-              <p className="text-white/90 text-xs font-medium">Analyses</p>
+              <p className="text-white/80 text-xs font-medium">Analyses</p>
             </div>
-            <p className="text-white text-2xl font-bold tracking-tight">23</p>
-            <p className="text-white/70 text-xs mt-1 font-medium">Quotes scanned</p>
+            <p className="text-white text-2xl font-black tabular-nums tracking-tight">{analysisCount}</p>
+            <p className="text-white/60 text-xs mt-1">Quotes scanned</p>
           </div>
         </div>
       </div>
 
-      <div className="px-6 py-6 space-y-8">
+      <div className="px-6 py-5 space-y-7">
+
+        {/* Quick-start CTA */}
+        <Link
+          href="/camera"
+          className="block bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-4 shadow-lg shadow-indigo-200 active:scale-[0.98] transition-transform animate-fade-slide-up"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+              <i className="fas fa-magic text-white text-xl"></i>
+            </div>
+            <div className="flex-1">
+              <p className="text-white font-bold">Analyze a New Quote</p>
+              <p className="text-white/70 text-xs mt-0.5">10 seconds to find your savings</p>
+            </div>
+            <div className="bg-white/20 rounded-xl px-3 py-1.5">
+              <span className="text-white text-xs font-bold">Start →</span>
+            </div>
+          </div>
+        </Link>
+
         {/* Quick Actions */}
-        <div className="animate-slide-up" style={{ animationDelay: '0.3s' }}>
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h2>
+        <div className="animate-fade-slide-up delay-100">
+          <h2 className="text-lg font-bold text-gray-900 mb-3">Quick Actions</h2>
           <div className="grid grid-cols-2 gap-3">
             <Link
               href="/camera"
-              className="group bg-gradient-to-br from-green-400 to-green-600 rounded-2xl p-5 shadow-lg active:scale-95 transition-all hover:shadow-green-200 hover:shadow-xl"
+              className="group bg-gradient-to-br from-green-400 to-green-600 rounded-2xl p-4 shadow-md active:scale-95 transition-all hover:shadow-green-200 hover:shadow-xl"
             >
-              <div className="w-12 h-12 bg-white/90 backdrop-blur rounded-xl flex items-center justify-center mb-3 shadow-inner group-hover:scale-110 transition-transform">
-                <i className="fas fa-camera text-green-600 text-2xl"></i>
+              <div className="w-10 h-10 bg-white/90 rounded-xl flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform">
+                <i className="fas fa-camera text-green-600 text-xl"></i>
               </div>
-              <p className="text-white font-bold text-lg mb-1">Scan Quote</p>
-              <p className="text-white/90 text-xs font-medium">Analyze new repair estimate</p>
+              <p className="text-white font-bold">Scan Quote</p>
+              <p className="text-white/80 text-xs mt-0.5">Analyze estimate</p>
             </Link>
 
             <Link
               href="/mechanic-finder"
-              className="group bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl p-5 shadow-lg active:scale-95 transition-all hover:shadow-blue-200 hover:shadow-xl"
+              className="group bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl p-4 shadow-md active:scale-95 transition-all hover:shadow-blue-200 hover:shadow-xl"
             >
-              <div className="w-12 h-12 bg-white/90 backdrop-blur rounded-xl flex items-center justify-center mb-3 shadow-inner group-hover:scale-110 transition-transform">
-                <i className="fas fa-map-marker-alt text-blue-600 text-2xl"></i>
+              <div className="w-10 h-10 bg-white/90 rounded-xl flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform">
+                <i className="fas fa-map-marker-alt text-blue-600 text-xl"></i>
               </div>
-              <p className="text-white font-bold text-lg mb-1">Find Shop</p>
-              <p className="text-white/90 text-xs font-medium">Locate trusted mechanics</p>
+              <p className="text-white font-bold">Find Shop</p>
+              <p className="text-white/80 text-xs mt-0.5">Trusted mechanics</p>
             </Link>
 
             <Link
-              href="/subscription"
-              className="group bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl p-5 shadow-lg active:scale-95 transition-all hover:shadow-purple-200 hover:shadow-xl"
+              href="/compare"
+              className="group bg-gradient-to-br from-violet-400 to-purple-600 rounded-2xl p-4 shadow-md active:scale-95 transition-all hover:shadow-purple-200 hover:shadow-xl"
             >
-              <div className="w-12 h-12 bg-white/90 backdrop-blur rounded-xl flex items-center justify-center mb-3 shadow-inner group-hover:scale-110 transition-transform">
-                <i className="fas fa-crown text-purple-600 text-2xl"></i>
+              <div className="w-10 h-10 bg-white/90 rounded-xl flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform">
+                <i className="fas fa-columns text-purple-600 text-xl"></i>
               </div>
-              <p className="text-white font-bold text-lg mb-1">Go Premium</p>
-              <p className="text-white/90 text-xs font-medium">Unlock all features</p>
+              <p className="text-white font-bold">Compare</p>
+              <p className="text-white/80 text-xs mt-0.5">Side-by-side quotes</p>
             </Link>
 
             <Link
               href="/profile"
-              className="group bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl p-5 shadow-lg active:scale-95 transition-all hover:shadow-orange-200 hover:shadow-xl"
+              className="group bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl p-4 shadow-md active:scale-95 transition-all hover:shadow-orange-200 hover:shadow-xl"
             >
-              <div className="w-12 h-12 bg-white/90 backdrop-blur rounded-xl flex items-center justify-center mb-3 shadow-inner group-hover:scale-110 transition-transform">
-                <i className="fas fa-car text-orange-600 text-2xl"></i>
+              <div className="w-10 h-10 bg-white/90 rounded-xl flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform">
+                <i className="fas fa-car text-orange-600 text-xl"></i>
               </div>
-              <p className="text-white font-bold text-lg mb-1">My Vehicles</p>
-              <p className="text-white/90 text-xs font-medium">Manage your cars</p>
+              <p className="text-white font-bold">My Vehicles</p>
+              <p className="text-white/80 text-xs mt-0.5">Manage your cars</p>
             </Link>
           </div>
         </div>
 
         {/* Recent Activity */}
-        <div className="animate-slide-up" style={{ animationDelay: '0.4s' }}>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-900">Recent Activity</h2>
-            <button className="text-sm text-indigo-600 font-semibold hover:text-indigo-700 transition-colors">
-              View All
-            </button>
+        <div className="animate-fade-slide-up delay-200">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-lg font-bold text-gray-900">Recent Activity</h2>
+            <button className="text-sm text-indigo-600 font-semibold">View All</button>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {activities.slice(0, 5).map((activity) => (
               <div
                 key={activity.id}
-                className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer active:scale-[0.99]"
+                className={`bg-white rounded-2xl p-4 shadow-sm border border-gray-100 border-l-4 ${borderForColor[activity.color] ?? 'border-l-gray-300'} hover:shadow-md transition-shadow cursor-pointer active:scale-[0.99]`}
                 onClick={() => setSelectedActivity(activity)}
               >
-                <div className="flex gap-4">
-                  <div className={`w-12 h-12 ${bgForColor[activity.color] ?? 'bg-gray-100'} rounded-xl flex items-center justify-center flex-shrink-0`}>
-                    <i className={`fas ${activity.icon} ${textForColor[activity.color] ?? 'text-gray-600'} text-xl`}></i>
+                <div className="flex gap-3 items-center">
+                  <div className={`w-11 h-11 ${bgForColor[activity.color] ?? 'bg-gray-100'} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                    <i className={`fas ${activity.icon} ${textForColor[activity.color] ?? 'text-gray-600'} text-lg`}></i>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between mb-1 gap-2">
-                      <h3 className="font-bold text-gray-900 truncate flex-1">{activity.title}</h3>
-                      <span className="text-xs text-gray-500 whitespace-nowrap flex-shrink-0">{activity.date}</span>
+                    <div className="flex items-start justify-between gap-2 mb-0.5">
+                      <h3 className="font-bold text-gray-900 text-sm truncate flex-1">{activity.title}</h3>
+                      <span className="text-xs text-gray-400 whitespace-nowrap flex-shrink-0">{activity.date}</span>
                     </div>
-                    <p className="text-sm text-gray-600 mb-2 truncate">{activity.shop}</p>
-                    <div className="flex items-center gap-3">
-                      <span className="text-sm font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-md">
+                    <p className="text-xs text-gray-500 truncate mb-1.5">{activity.shop}</p>
+                    <div className="flex items-center gap-2">
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded-lg ${savingsBgForColor[activity.color] ?? 'bg-gray-50 text-gray-600'}`}>
                         Saved {activity.saved}
                       </span>
-                      <span className="text-xs text-gray-500">Total: {activity.total}</span>
+                      <span className="text-xs text-gray-400">Total: {activity.total}</span>
                     </div>
                   </div>
+                  <i className="fas fa-chevron-right text-gray-300 text-xs flex-shrink-0"></i>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Insights Card */}
-        <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl p-6 shadow-lg shadow-indigo-200 animate-slide-up" style={{ animationDelay: '0.5s' }}>
+        {/* Insight Card */}
+        <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl p-5 shadow-lg shadow-indigo-200 animate-fade-slide-up delay-300">
           <div className="flex items-start gap-4">
-            <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center flex-shrink-0 border border-white/20">
-              <i className="fas fa-lightbulb text-yellow-300 text-2xl"></i>
+            <div className="w-11 h-11 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/20">
+              <i className="fas fa-lightbulb text-yellow-300 text-xl"></i>
             </div>
             <div className="flex-1 text-white">
-              <h3 className="font-bold text-lg mb-2">Smart Insight</h3>
-              <p className="text-white/90 text-sm leading-relaxed mb-4 font-medium">
+              <h3 className="font-bold mb-1.5">Smart Insight</h3>
+              <p className="text-white/85 text-sm leading-relaxed mb-3">
                 You've saved an average of{' '}
-                <span className="font-bold bg-white/20 px-1 rounded">$156</span> per quote. Users
-                like you typically save 18–25% on repair costs.
+                <span className="font-bold bg-white/20 px-1.5 py-0.5 rounded-lg">$156</span> per quote.
+                Users like you typically save 18–25% on repair costs.
               </p>
               <button className="text-sm font-bold text-white flex items-center gap-2 hover:gap-3 transition-all">
                 See Detailed Stats <i className="fas fa-arrow-right text-xs"></i>
@@ -281,58 +325,47 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Tips Section */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 animate-slide-up" style={{ animationDelay: '0.6s' }}>
-          <div className="flex items-center justify-between mb-4">
+        {/* Tips */}
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 animate-fade-slide-up delay-400">
+          <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <i className="fas fa-graduation-cap text-indigo-600 text-xl"></i>
+              <i className="fas fa-graduation-cap text-indigo-600"></i>
               <h3 className="font-bold text-gray-900">Daily Car Tip</h3>
             </div>
-            <button onClick={nextTip} className="text-gray-400 hover:text-indigo-600 transition-colors">
-              <i className="fas fa-sync-alt"></i>
+            <button onClick={() => setCurrentTipIndex((prev) => (prev + 1) % tips.length)} className="text-gray-400 hover:text-indigo-600 transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-indigo-50">
+              <i className="fas fa-sync-alt text-sm"></i>
             </button>
           </div>
-          <div key={currentTipIndex} className="animate-fade-in">
-            <h4 className="font-semibold text-gray-800 mb-2">{tips[currentTipIndex].title}</h4>
-            <p className="text-sm text-gray-600 leading-relaxed mb-3">{tips[currentTipIndex].content}</p>
+          <div key={currentTipIndex} className="animate-fade-slide-up">
+            <h4 className="font-semibold text-gray-800 mb-1.5 text-sm">{tips[currentTipIndex].title}</h4>
+            <p className="text-sm text-gray-500 leading-relaxed">{tips[currentTipIndex].content}</p>
           </div>
-          <button className="text-sm text-indigo-600 font-semibold hover:underline">
-            Learn More
-          </button>
         </div>
       </div>
 
       <BottomNav />
 
-      {/* Activity Detail Modal */}
+      {/* Activity Modal */}
       {selectedActivity && (
         <div className="fixed inset-0 z-50 flex items-end justify-center">
-          <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={() => setSelectedActivity(null)}
-          ></div>
-          <div className="relative w-full max-w-md bg-white rounded-t-3xl p-6 shadow-2xl max-h-[85vh] overflow-y-auto">
-            <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-5"></div>
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setSelectedActivity(null)}></div>
+          <div className="relative w-full max-w-md bg-white rounded-t-3xl p-6 shadow-2xl max-h-[85vh] overflow-y-auto animate-slide-up">
+            <div className="w-10 h-1.5 bg-gray-300 rounded-full mx-auto mb-5"></div>
 
-            {/* Modal Header */}
             <div className="flex items-start gap-4 mb-5">
               <div className={`w-14 h-14 ${bgForColor[selectedActivity.color] ?? 'bg-gray-100'} rounded-2xl flex items-center justify-center flex-shrink-0`}>
                 <i className={`fas ${selectedActivity.icon} ${textForColor[selectedActivity.color] ?? 'text-gray-600'} text-2xl`}></i>
               </div>
               <div className="flex-1">
-                <h2 className="text-xl font-bold text-gray-900 mb-1">{selectedActivity.title}</h2>
-                <p className="text-sm text-gray-600">{selectedActivity.shop}</p>
+                <h2 className="text-xl font-bold text-gray-900 mb-0.5">{selectedActivity.title}</h2>
+                <p className="text-sm text-gray-500">{selectedActivity.shop}</p>
                 <p className="text-xs text-gray-400 mt-0.5">{selectedActivity.date}</p>
               </div>
-              <button
-                onClick={() => setSelectedActivity(null)}
-                className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 flex-shrink-0"
-              >
+              <button onClick={() => setSelectedActivity(null)} className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-500">
                 <i className="fas fa-times text-sm"></i>
               </button>
             </div>
 
-            {/* Savings Summary */}
             <div className="bg-green-50 rounded-2xl p-4 mb-5 flex items-center justify-between">
               <div>
                 <p className="text-xs text-gray-500 mb-0.5">You saved</p>
@@ -344,30 +377,19 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {/* Line Items */}
             {selectedActivity.items.length > 0 && (
               <div>
-                <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">
-                  Line Items
-                </h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Line Items</h3>
                 <div className="space-y-2">
                   {selectedActivity.items.map((item, idx) => (
                     <div key={idx} className="flex items-center justify-between py-2.5 border-b border-gray-100 last:border-0">
                       <div className="flex-1 min-w-0 mr-3">
                         <p className="font-medium text-gray-900 text-sm truncate">{item.name}</p>
-                        <span
-                          className={`text-xs font-semibold ${
-                            item.status === 'Fair' ? 'text-green-600' : 'text-red-500'
-                          }`}
-                        >
-                          {item.status}
-                        </span>
+                        <span className={`text-xs font-semibold ${item.status === 'Fair' ? 'text-green-600' : 'text-red-500'}`}>{item.status}</span>
                       </div>
                       <div className="text-right flex-shrink-0">
                         <p className="font-bold text-gray-900 text-sm">${item.currentPrice}</p>
-                        {item.currentPrice !== item.originalPrice && (
-                          <p className="text-xs text-gray-400 line-through">${item.originalPrice}</p>
-                        )}
+                        {item.currentPrice !== item.originalPrice && <p className="text-xs text-gray-400 line-through">${item.originalPrice}</p>}
                       </div>
                     </div>
                   ))}
@@ -375,10 +397,7 @@ export default function DashboardPage() {
               </div>
             )}
 
-            <button
-              onClick={() => setSelectedActivity(null)}
-              className="mt-5 w-full bg-indigo-600 text-white font-semibold py-3.5 rounded-2xl active:scale-95 transition-transform"
-            >
+            <button onClick={() => setSelectedActivity(null)} className="mt-5 w-full bg-indigo-600 text-white font-semibold py-3.5 rounded-2xl active:scale-95 transition-transform">
               Close
             </button>
           </div>
