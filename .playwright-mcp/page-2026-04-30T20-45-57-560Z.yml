@@ -1,0 +1,137 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]: 16:45
+      - generic [ref=e5]:
+        - generic [ref=e6]: 
+        - generic [ref=e7]: 
+        - generic [ref=e8]: 
+    - generic [ref=e9]:
+      - generic [ref=e10]:
+        - link "" [ref=e11] [cursor=pointer]:
+          - /url: /camera
+          - generic [ref=e12]: 
+        - generic [ref=e13]:
+          - button "" [ref=e14] [cursor=pointer]:
+            - generic [ref=e15]: 
+          - link "" [ref=e16] [cursor=pointer]:
+            - /url: /compare
+            - generic [ref=e17]: 
+      - heading "Quote Analysis" [level=1] [ref=e18]
+      - paragraph [ref=e19]: AutoCare Service Center · April 21, 2026
+      - paragraph [ref=e20]: 2018 Toyota Camry · 68,750 mi
+    - generic [ref=e21]:
+      - generic [ref=e22]:
+        - generic [ref=e23]:
+          - generic [ref=e25]: 
+          - generic [ref=e26]:
+            - heading "You Can Save Money!" [level=2] [ref=e27]
+            - paragraph [ref=e28]: We found cheaper alternatives that match quality standards
+            - generic [ref=e29]:
+              - generic [ref=e30]: $1
+              - generic [ref=e31]: in potential savings
+        - paragraph [ref=e32]: You're saving more than 82% of users this week.
+      - generic [ref=e33]:
+        - heading "Cost Comparison" [level=3] [ref=e34]
+        - generic [ref=e35]:
+          - generic [ref=e37]:
+            - generic [ref=e38]: Original Quote
+            - generic [ref=e39]: $640
+          - generic [ref=e43]:
+            - generic [ref=e44]: With Our Picks
+            - generic [ref=e45]: $542
+        - generic [ref=e49]:
+          - generic [ref=e50]:
+            - generic [ref=e51]: Subtotal
+            - generic [ref=e52]: $542.00
+          - generic [ref=e53]:
+            - generic [ref=e54]: Tax (8.00%)
+            - generic [ref=e55]: $43.36
+          - generic [ref=e56]:
+            - generic [ref=e57]: Total
+            - generic [ref=e58]: $585.36
+          - generic [ref=e59]:
+            - generic [ref=e60]: You save
+            - generic [ref=e61]: 15.3% ($98)
+      - generic [ref=e62]:
+        - generic [ref=e63]: Fair
+        - generic [ref=e65]: High
+        - generic [ref=e67]: Overpriced
+      - generic [ref=e69]:
+        - heading "Itemized Analysis" [level=3] [ref=e70]
+        - generic [ref=e72] [cursor=pointer]:
+          - generic [ref=e73]:
+            - generic [ref=e74]:
+              - generic [ref=e75]:
+                - heading "Brake Pad Replacement (Front)" [level=4] [ref=e76]
+                - generic [ref=e77]: 🔴 Overpriced
+              - paragraph [ref=e78]: OEM Toyota Parts
+            - generic [ref=e79]:
+              - paragraph [ref=e80]: $195
+              - paragraph [ref=e81]: $250
+              - paragraph [ref=e82]: "Mkt: $180–220"
+          - generic [ref=e86]:
+            - generic [ref=e87]: 
+            - text: Tap to save $55
+        - generic [ref=e89] [cursor=pointer]:
+          - generic [ref=e90]:
+            - generic [ref=e91]:
+              - generic [ref=e92]:
+                - heading "Engine Oil Change" [level=4] [ref=e93]
+                - generic [ref=e94]: 🟡 Overpriced
+              - paragraph [ref=e95]: Full synthetic + oil filter included
+            - generic [ref=e96]:
+              - paragraph [ref=e97]: $55
+              - paragraph [ref=e98]: $80
+              - paragraph [ref=e99]: "Mkt: $38–80"
+          - generic [ref=e103]:
+            - generic [ref=e104]: 
+            - text: Tap to save $25
+        - generic [ref=e106] [cursor=pointer]:
+          - generic [ref=e107]:
+            - generic [ref=e108]:
+              - generic [ref=e109]:
+                - heading "Air Filter Replacement" [level=4] [ref=e110]
+                - generic [ref=e111]: 🟡 Overpriced
+              - paragraph [ref=e112]: Engine air filter
+            - generic [ref=e113]:
+              - paragraph [ref=e114]: $22
+              - paragraph [ref=e115]: $40
+              - paragraph [ref=e116]: "Mkt: $17–55"
+          - generic [ref=e120]:
+            - generic [ref=e121]: 
+            - text: Tap to save $18
+        - generic [ref=e124] [cursor=pointer]:
+          - generic [ref=e125]:
+            - generic [ref=e126]:
+              - heading "Labor (3 hrs)" [level=4] [ref=e127]
+              - generic [ref=e128]: 🟢 Fair
+            - paragraph [ref=e129]: $90/hr — general repairs & inspection
+          - generic [ref=e130]:
+            - paragraph [ref=e131]: $270
+            - paragraph [ref=e132]: "Mkt: $240–300"
+      - link " Compare both demo quotes side-by-side " [ref=e136] [cursor=pointer]:
+        - /url: /compare
+        - paragraph [ref=e137]:
+          - generic [ref=e138]: 
+          - text: Compare both demo quotes side-by-side
+          - generic [ref=e139]: 
+      - generic [ref=e140]:
+        - generic [ref=e141]:
+          - generic [ref=e143]: 
+          - generic [ref=e144]:
+            - heading "Smart Alternatives Available" [level=3] [ref=e145]
+            - paragraph [ref=e146]: High-quality parts from trusted brands can save you money without compromising safety or performance.
+        - link "Find a Better Mechanic Nearby " [ref=e147] [cursor=pointer]:
+          - /url: /mechanic-finder
+          - text: Find a Better Mechanic Nearby
+          - generic [ref=e148]: 
+      - generic [ref=e149]:
+        - button " Get Detailed PDF Report" [ref=e150] [cursor=pointer]:
+          - generic [ref=e151]: 
+          - text: Get Detailed PDF Report
+        - link " Find Better Mechanics Nearby" [ref=e152] [cursor=pointer]:
+          - /url: /mechanic-finder
+          - generic [ref=e153]: 
+          - text: Find Better Mechanics Nearby
+  - alert [ref=e154]

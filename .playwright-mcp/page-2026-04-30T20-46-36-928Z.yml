@@ -1,0 +1,29 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]: 
+    - heading "Analyzing Your Quote" [level=1] [ref=e6]
+    - paragraph [ref=e7]: Our AI is working its magic...
+    - generic [ref=e8]:
+      - generic [ref=e11]:
+        - generic [ref=e13]: 
+        - generic [ref=e14]:
+          - heading "Scanning Quote" [level=3] [ref=e16]
+          - paragraph [ref=e21]:
+            - generic [ref=e22]: F
+      - generic [ref=e26]:
+        - generic [ref=e28]: 
+        - generic [ref=e29]:
+          - heading "Checking Prices" [level=3] [ref=e31]
+          - paragraph [ref=e32]: Waiting...
+      - generic [ref=e35]:
+        - generic [ref=e37]: 
+        - generic [ref=e38]:
+          - heading "Finding Savings" [level=3] [ref=e40]
+          - paragraph [ref=e41]: Waiting...
+    - generic [ref=e43]:
+      - generic [ref=e44]: Progress
+      - generic [ref=e45]: 0%
+    - generic [ref=e48]:
+      - generic [ref=e49]: 
+      - paragraph [ref=e50]: OEM vs Aftermarket pricing often differs by 30–45%.
+  - alert [ref=e51]

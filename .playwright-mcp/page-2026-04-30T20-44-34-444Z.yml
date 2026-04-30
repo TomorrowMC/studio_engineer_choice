@@ -1,0 +1,69 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]: 9:41
+    - generic [ref=e5]:
+      - generic [ref=e6]: 
+      - generic [ref=e7]: 
+      - generic [ref=e8]: 
+  - generic [ref=e9]:
+    - generic [ref=e10]:
+      - link "" [ref=e11] [cursor=pointer]:
+        - /url: /dashboard
+        - generic [ref=e12]: 
+      - heading "Analyze Quote" [level=1] [ref=e13]
+      - generic [ref=e15]: 
+    - generic [ref=e17]:
+      - generic [ref=e18]: 
+      - text: Demo Mode — Select a sample quote below
+    - generic [ref=e19]:
+      - paragraph [ref=e20]: Choose a Quote to Analyze
+      - button " 2018 Toyota Camry AutoCare Service Center · 68,750 mi 4 items April 21, 2026 Save up to $80 Front Brake Pads Engine Oil Change Air Filter Labor Quoted total $640.00 Save $80 →" [ref=e21] [cursor=pointer]:
+        - generic [ref=e22]:
+          - generic [ref=e24]:
+            - generic [ref=e26]: 
+            - generic [ref=e27]:
+              - paragraph [ref=e28]: 2018 Toyota Camry
+              - paragraph [ref=e29]: AutoCare Service Center · 68,750 mi
+          - generic [ref=e31]:
+            - generic [ref=e32]: 4 items
+            - generic [ref=e33]: April 21, 2026
+            - generic [ref=e34]: Save up to $80
+          - generic [ref=e35]:
+            - generic [ref=e36]: Front Brake Pads
+            - generic [ref=e37]: Engine Oil Change
+            - generic [ref=e38]: Air Filter
+            - generic [ref=e39]: Labor
+        - generic [ref=e40]:
+          - generic [ref=e41]: Quoted total
+          - generic [ref=e42]:
+            - generic [ref=e43]: $640.00
+            - generic [ref=e44]: Save $80 →
+      - button " 2019 Honda Accord XYZ Auto Service · 87,450 mi 4 items April 23, 2024 Save up to $95 Serpentine Belt Tire Rotation Battery Cabin Air Filter Quoted total $410.00 Save $95 →" [ref=e45] [cursor=pointer]:
+        - generic [ref=e46]:
+          - generic [ref=e48]:
+            - generic [ref=e50]: 
+            - generic [ref=e51]:
+              - paragraph [ref=e52]: 2019 Honda Accord
+              - paragraph [ref=e53]: XYZ Auto Service · 87,450 mi
+          - generic [ref=e55]:
+            - generic [ref=e56]: 4 items
+            - generic [ref=e57]: April 23, 2024
+            - generic [ref=e58]: Save up to $95
+          - generic [ref=e59]:
+            - generic [ref=e60]: Serpentine Belt
+            - generic [ref=e61]: Tire Rotation
+            - generic [ref=e62]: Battery
+            - generic [ref=e63]: Cabin Air Filter
+        - generic [ref=e64]:
+          - generic [ref=e65]: Quoted total
+          - generic [ref=e66]:
+            - generic [ref=e67]: $410.00
+            - generic [ref=e68]: Save $95 →
+    - button " Or upload your own quote photo " [ref=e70] [cursor=pointer]:
+      - generic [ref=e71]:
+        - generic [ref=e72]: 
+        - text: Or upload your own quote photo
+      - generic [ref=e73]: 
+    - button " Select a quote above" [disabled] [ref=e74]:
+      - generic [ref=e75]: 
+      - text: Select a quote above

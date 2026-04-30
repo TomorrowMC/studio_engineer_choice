@@ -1,0 +1,160 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]: 16:46
+      - generic [ref=e5]:
+        - generic [ref=e6]: 
+        - generic [ref=e7]: 
+        - generic [ref=e8]: 
+    - generic [ref=e10]:
+      - link "" [ref=e11] [cursor=pointer]:
+        - /url: /dashboard
+        - generic [ref=e12]: 
+      - generic [ref=e13]:
+        - heading "Compare Quotes" [level=1] [ref=e14]
+        - paragraph [ref=e15]: Side-by-side analysis of your demo quotes
+    - generic [ref=e16]:
+      - generic [ref=e17]:
+        - generic [ref=e18]:
+          - generic [ref=e20]: 
+          - generic [ref=e21]:
+            - heading "Combined Savings Opportunity" [level=2] [ref=e22]
+            - paragraph [ref=e23]: Across both demo quotes
+        - generic [ref=e24]:
+          - generic [ref=e25]:
+            - paragraph [ref=e26]: Toyota Camry
+            - paragraph [ref=e27]: $80
+            - paragraph [ref=e28]: savings
+          - generic [ref=e29]:
+            - paragraph [ref=e30]: Honda Accord
+            - paragraph [ref=e31]: $95
+            - paragraph [ref=e32]: savings
+          - generic [ref=e33]:
+            - paragraph [ref=e34]: Combined
+            - paragraph [ref=e35]: $175
+            - paragraph [ref=e36]: total
+      - generic [ref=e38]:
+        - generic [ref=e40]: 
+        - generic [ref=e41]:
+          - paragraph [ref=e42]: Best Savings — 2019 Honda Accord
+          - paragraph [ref=e43]: $95 potential savings · XYZ Auto Service
+      - generic [ref=e44]:
+        - button "Both" [ref=e45] [cursor=pointer]
+        - button "Toyota" [ref=e46] [cursor=pointer]
+        - button "Honda" [ref=e47] [cursor=pointer]
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - generic [ref=e50]:
+            - paragraph [ref=e51]: 2018 Toyota Camry
+            - paragraph [ref=e52]: AutoCare Service Center
+          - generic [ref=e53]:
+            - generic [ref=e54]:
+              - generic [ref=e55]: Quoted
+              - generic [ref=e56]: $691
+            - generic [ref=e57]:
+              - generic [ref=e58]: Savings
+              - generic [ref=e59]: $80
+            - generic [ref=e60]:
+              - generic [ref=e61]: 3 overpriced
+              - generic [ref=e62]: 1 fair
+        - generic [ref=e63]:
+          - generic [ref=e64]:
+            - paragraph [ref=e65]: 2019 Honda Accord
+            - paragraph [ref=e66]: XYZ Auto Service
+          - generic [ref=e67]:
+            - generic [ref=e68]:
+              - generic [ref=e69]: Quoted
+              - generic [ref=e70]: $444
+            - generic [ref=e71]:
+              - generic [ref=e72]: Savings
+              - generic [ref=e73]: $95
+            - generic [ref=e74]:
+              - generic [ref=e75]: 3 overpriced
+              - generic [ref=e76]: 1 fair
+      - generic [ref=e77]:
+        - heading " Itemized Breakdown" [level=3] [ref=e78]:
+          - generic [ref=e79]: 
+          - text: Itemized Breakdown
+        - generic [ref=e80]:
+          - generic [ref=e81]:
+            - paragraph [ref=e82]: Brake Pad Replacement
+            - generic [ref=e83]:
+              - generic [ref=e84]:
+                - paragraph [ref=e85]: $195
+                - paragraph [ref=e86]: $250
+              - generic [ref=e87]: –$55
+          - generic [ref=e88]:
+            - paragraph [ref=e89]: Serpentine Belt
+            - generic [ref=e90]:
+              - generic [ref=e91]:
+                - paragraph [ref=e92]: $90
+                - paragraph [ref=e93]: $125
+              - generic [ref=e94]: –$35
+        - generic [ref=e95]:
+          - generic [ref=e96]:
+            - paragraph [ref=e97]: Engine Oil Change
+            - generic [ref=e98]:
+              - generic [ref=e99]:
+                - paragraph [ref=e100]: $55
+                - paragraph [ref=e101]: $80
+              - generic [ref=e102]: –$25
+          - generic [ref=e103]:
+            - paragraph [ref=e104]: Tire Rotation & Balance
+            - generic [ref=e105]:
+              - paragraph [ref=e107]: $60
+              - generic [ref=e108]: ✓ Fair
+        - generic [ref=e109]:
+          - generic [ref=e110]:
+            - paragraph [ref=e111]: Air Filter Replacement
+            - generic [ref=e112]:
+              - generic [ref=e113]:
+                - paragraph [ref=e114]: $22
+                - paragraph [ref=e115]: $40
+              - generic [ref=e116]: –$18
+          - generic [ref=e117]:
+            - paragraph [ref=e118]: Replace Battery
+            - generic [ref=e119]:
+              - generic [ref=e120]:
+                - paragraph [ref=e121]: $145
+                - paragraph [ref=e122]: $180
+              - generic [ref=e123]: –$35
+        - generic [ref=e124]:
+          - generic [ref=e125]:
+            - paragraph [ref=e126]: Labor (3 hrs)
+            - generic [ref=e127]:
+              - paragraph [ref=e129]: $270
+              - generic [ref=e130]: ✓ Fair
+          - generic [ref=e131]:
+            - paragraph [ref=e132]: Cabin Air Filter
+            - generic [ref=e133]:
+              - generic [ref=e134]:
+                - paragraph [ref=e135]: $22
+                - paragraph [ref=e136]: $45
+              - generic [ref=e137]: –$23
+      - generic [ref=e138]:
+        - link " Analyze a New Quote" [ref=e139] [cursor=pointer]:
+          - /url: /camera
+          - generic [ref=e140]: 
+          - text: Analyze a New Quote
+        - link " Find a Mechanic Near You" [ref=e141] [cursor=pointer]:
+          - /url: /mechanic-finder
+          - generic [ref=e142]: 
+          - text: Find a Mechanic Near You
+    - generic [ref=e143]:
+      - link " Home" [ref=e144] [cursor=pointer]:
+        - /url: /dashboard
+        - generic [ref=e145]: 
+        - generic [ref=e146]: Home
+      - link " Scan" [ref=e147] [cursor=pointer]:
+        - /url: /camera
+        - generic [ref=e148]: 
+        - generic [ref=e149]: Scan
+      - link " Find" [ref=e150] [cursor=pointer]:
+        - /url: /mechanic-finder
+        - generic [ref=e151]: 
+        - generic [ref=e152]: Find
+      - link " Profile" [ref=e153] [cursor=pointer]:
+        - /url: /profile
+        - generic [ref=e154]: 
+        - generic [ref=e155]: Profile
+  - alert [ref=e156]
